@@ -7,6 +7,12 @@ import java.util.Scanner;
 
 public class Main {
 
+    private static GUI gui;
+
+    public static void setGui(GUI gui) {
+        gui = gui;
+    }
+
     private void send(String text, PrintWriter out){
         out.println(text);
         out.flush();
@@ -27,11 +33,11 @@ public class Main {
            bufferedReader.close();
 
            Socket clientSocket=new Socket(address, portNumber);
-           PrintWriter out=new PrintWriter(clientSocket.getOutputStream(), true);
-           BufferedReader in=new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-           Scanner scanner=new Scanner(System.in);
-           String userInput;
-           while(true){
+           //PrintWriter out=new PrintWriter(clientSocket.getOutputStream(), true);
+           //BufferedReader in=new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+          // Scanner scanner=new Scanner(System.in);
+          // String userInput;
+          /* while(true){
                if(scanner.hasNextLine()){
                    userInput=scanner.nextLine();
                    if (userInput.equals("/quit")){
@@ -41,7 +47,22 @@ public class Main {
                    out.println(user.getName()+": "+userInput);
                }
                System.out.println(in.readLine());
-           }
+           }*/
+           javax.swing.SwingUtilities.invokeLater(new Runnable() {
+               public void run() {
+                  GUI gui=GUI.createAndShowGUI(clientSocket, user);
+                    Main.setGui(gui);
+               }
+           });
+          Thread incomingMessageObserver=new Thread(new IncomingMessageObserver(clientSocket,gui));
+         try {
+             incomingMessageObserver.join();
+         }
+         catch(InterruptedException e){
+             e.printStackTrace();
+         }
+
+         gui.receiveMessage("READY");
 
        }
        catch (FileNotFoundException e) {

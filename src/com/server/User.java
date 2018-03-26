@@ -49,7 +49,7 @@ public class User implements Runnable {
             while(true){
                 inputLine=in.readLine();
                 if(inputLine.equals("/quit")) break;
-               // System.out.println(inputLine);
+              //  System.out.println(inputLine);
                 Observer.sendMessage(inputLine);
             }
             System.out.println("User quit");
