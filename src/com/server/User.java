@@ -11,6 +11,8 @@ public class User implements Runnable {
     private String userName;
   //  private PrintWriter out;
 
+    //prova di push da IntelliJ
+
     public User(Socket clientSocket) {
         this.clientSocket = clientSocket;
       /* try {
